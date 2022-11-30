@@ -1,0 +1,22 @@
+plugins {
+   id 'java'
+   id 'org.springframework.boot' version '2.6.4'
+   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    testLogging.showStandardStreams = true
+}
