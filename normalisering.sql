@@ -33,9 +33,10 @@ CREATE TABLE Student (
 	FirstName VARCHAR(255) NOT NULL,
 	LastName VARCHAR(255) NOT NULL,
 	CONSTRAINT PRIMARY KEY (StudentId)
-) ENGINE=INNODB;
+	) ENGINE=INNODB;
 
 INSERT INTO Student(StudentId, FirstName, LastName) SELECT DISTINCT Id, SUBSTRING_INDEX(Name, ' ', 1), SUBSTRING_INDEX(Name, ' ', -1) FROM UNF;
+
 
 /* School */
 
@@ -49,3 +50,15 @@ CREATE TABLE School (
 )ENGINE=INNODB;
 
 INSERT INTO School(School, City) SELECT DISTINCT School, City FROM UNF;
+
+
+/* StudentSchool */
+
+DROP TABLE IF EXISTS StudentSchool;
+
+CREATE TABLE StudentSchool AS SELECT DISTINCT UNF.Id AS StudentId, School.SchoolId FROM UNF
+JOIN School USING(School);
+
+ALTER TABLE StudentSchool MODIFY COLUMN StudentId INT;
+ALTER TABLE StudentSchool MODIFY COLUMN SchoolId INT;
+ALTER TABLE StudentSchool ADD PRIMARY KEY(StudentId, SchoolId);
