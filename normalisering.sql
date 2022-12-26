@@ -1,5 +1,7 @@
 USE iths;
 
+/* UNF */
+
 DROP TABLE IF EXISTS UNF;
 
 CREATE TABLE `UNF` (
@@ -92,3 +94,13 @@ WHERE MobilePhone2 IS NOT NULL AND MobilePhone2 != '';
 DROP VIEW IF EXISTS PhoneList;
 
 CREATE VIEW PhoneList AS SELECT StudentId, group_concat(Number) AS Numbers FROM Phone GROUP BY StudentId;
+
+/* Hobby */
+
+DROP TABLE IF EXISTS Hobby;
+
+CREATE TABLE Hobby(
+	HobbyId INT NOT NULL AUTO_INCREMENT,
+	Hobby VARCHAR(150) NOT NULL,
+	CONSTRAINT PRIMARY KEY(HobbyId)
+	) ENGINE=INNODB;	
