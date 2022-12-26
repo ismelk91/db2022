@@ -95,16 +95,6 @@ DROP VIEW IF EXISTS PhoneList;
 
 CREATE VIEW PhoneList AS SELECT StudentId, group_concat(Number) AS Numbers FROM Phone GROUP BY StudentId;
 
-/* Hobby */
-
-DROP TABLE IF EXISTS Hobby;
-
-CREATE TABLE Hobby(
-	HobbyId INT NOT NULL AUTO_INCREMENT,
-	Hobby VARCHAR(150) NOT NULL,
-	CONSTRAINT PRIMARY KEY(HobbyId)
-	) ENGINE=INNODB;
-
 
 /* HobbiesTemp */
 
@@ -118,6 +108,18 @@ UNION SELECT Id AS StudentId, TRIM(SUBSTRING_INDEX(Hobbies, ',', -1)) AS Hobby F
 WHERE Hobbies IS NOT NULL AND Hobbies != '' AND Hobbies != 'Nothing';
 
 
+/* Hobby */
+
+DROP TABLE IF EXISTS Hobby;
+
+CREATE TABLE Hobby(
+	HobbyId INT NOT NULL AUTO_INCREMENT,
+	Hobby VARCHAR(150) NOT NULL,
+	CONSTRAINT PRIMARY KEY(HobbyId)
+	)ENGINE=INNODB;
+
+INSERT INTO Hobby(Hobby) SELECT DISTINCT Hobby FROM HobbiesTemp;
+
 /* StudentHobby */
 
 DROP TABLE IF EXISTS StudentHobby;
@@ -125,4 +127,3 @@ CREATE TABLE StudentHobby AS SELECT StudentId, HobbyId FROM HobbiesTemp
 JOIN Hobby USING(Hobby);
 
 ALTER TABLE StudentHobby ADD PRIMARY KEY (StudentId, HobbyId);
-
