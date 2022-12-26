@@ -103,4 +103,16 @@ CREATE TABLE Hobby(
 	HobbyId INT NOT NULL AUTO_INCREMENT,
 	Hobby VARCHAR(150) NOT NULL,
 	CONSTRAINT PRIMARY KEY(HobbyId)
-	) ENGINE=INNODB;	
+	) ENGINE=INNODB;
+
+
+/* HobbiesTemp */
+
+DROP TABLE IF EXISTS HobbiesTemp;
+
+CREATE TABLE HobbiesTemp AS SELECT Id AS StudentId, TRIM(SUBSTRING_INDEX(Hobbies, ',', 1)) AS Hobby FROM UNF
+WHERE Hobbies IS NOT NULL AND Hobbies != '' AND HOBBIES != 'Nothing'
+UNION SELECT Id AS StudentId, TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(Hobbies, ',', -2), ',', 1)) AS Hobby FROM UNF
+WHERE Hobbies IS NOT NULL AND Hobbies != '' AND Hobbies != 'Nothing'
+UNION SELECT Id AS StudentId, TRIM(SUBSTRING_INDEX(Hobbies, ',', -1)) AS Hobby FROM UNF
+WHERE Hobbies IS NOT NULL AND Hobbies != '' AND Hobbies != 'Nothing';
