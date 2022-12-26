@@ -121,5 +121,8 @@ WHERE Hobbies IS NOT NULL AND Hobbies != '' AND Hobbies != 'Nothing';
 /* StudentHobby */
 
 DROP TABLE IF EXISTS StudentHobby;
-CREATE TABLE StudentHobby AS SELECT DISTINCT Hobby FROM HobbiesTemp;
+CREATE TABLE StudentHobby AS SELECT StudentId, HobbyId FROM HobbiesTemp
+JOIN Hobby USING(Hobby);
+
 ALTER TABLE StudentHobby ADD PRIMARY KEY (StudentId, HobbyId);
+
