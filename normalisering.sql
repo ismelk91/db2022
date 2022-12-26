@@ -108,11 +108,18 @@ CREATE TABLE Hobby(
 
 /* HobbiesTemp */
 
-DROP TABLE IF EXISTS HobbiesTemp;
+DROP VIEW IF EXISTS HobbiesTemp;
 
-CREATE TABLE HobbiesTemp AS SELECT Id AS StudentId, TRIM(SUBSTRING_INDEX(Hobbies, ',', 1)) AS Hobby FROM UNF
+CREATE VIEW HobbiesTemp AS SELECT Id AS StudentId, TRIM(SUBSTRING_INDEX(Hobbies, ',', 1)) AS Hobby FROM UNF
 WHERE Hobbies IS NOT NULL AND Hobbies != '' AND HOBBIES != 'Nothing'
 UNION SELECT Id AS StudentId, TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(Hobbies, ',', -2), ',', 1)) AS Hobby FROM UNF
 WHERE Hobbies IS NOT NULL AND Hobbies != '' AND Hobbies != 'Nothing'
 UNION SELECT Id AS StudentId, TRIM(SUBSTRING_INDEX(Hobbies, ',', -1)) AS Hobby FROM UNF
 WHERE Hobbies IS NOT NULL AND Hobbies != '' AND Hobbies != 'Nothing';
+
+
+/* StudentHobby */
+
+DROP TABLE IF EXISTS StudentHobby;
+CREATE TABLE StudentHobby AS SELECT DISTINCT Hobby FROM HobbiesTemp;
+ALTER TABLE StudentHobby ADD PRIMARY KEY (StudentId, HobbyId);
