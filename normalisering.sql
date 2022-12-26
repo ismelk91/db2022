@@ -120,10 +120,21 @@ CREATE TABLE Hobby(
 
 INSERT INTO Hobby(Hobby) SELECT DISTINCT Hobby FROM HobbiesTemp;
 
+
 /* StudentHobby */
 
 DROP TABLE IF EXISTS StudentHobby;
+
 CREATE TABLE StudentHobby AS SELECT StudentId, HobbyId FROM HobbiesTemp
 JOIN Hobby USING(Hobby);
 
 ALTER TABLE StudentHobby ADD PRIMARY KEY (StudentId, HobbyId);
+
+
+/* HobbyList */
+
+DROP VIEW IF EXISTS HobbyList;
+
+CREATE VIEW HobbyList AS SELECT StudentId, CONCAT(FirstName, ' ', LastName) AS Name, GROUP_CONCAT(Hobby) AS Hobbies FROM Student
+JOIN StudentHobby USING(StudentId)
+JOIN Hobby USING(HobbyId) GROUP BY StudentId;
