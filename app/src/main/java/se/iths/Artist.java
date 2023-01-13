@@ -25,7 +25,7 @@ public class Artist {
         this.name = name;
     }
 
-    private void add(Album album) {
+    public void add(Album album) {
         albums.add(album);
     }
 
