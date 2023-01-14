@@ -3,12 +3,12 @@ package se.iths;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Artist {
+public class Student {
     private final long id;
     private String name;
-    private Collection<Album> albums = new ArrayList<>();
+    private final Collection<School> schools = new ArrayList<>();
 
-    public Artist(long id, String name) {
+    public Student(long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -25,18 +25,18 @@ public class Artist {
         this.name = name;
     }
 
-    public void add(Album album) {
-        albums.add(album);
+    public void add(School school) {
+        schools.add(school);
     }
 
     public String toString() {
         StringBuilder builder = new StringBuilder(String.valueOf(id));
         builder.append(": ");
         builder.append(name);
-        builder.append("\nAlbums:\n");
-        for(Album album : albums) {
-            builder.append("\t");
-            builder.append(album);
+        builder.append("\nSchool:");
+        for(School school : schools) {
+            builder.append(" ");
+            builder.append(school);
             builder.append("\n");
         }
         return builder.toString();

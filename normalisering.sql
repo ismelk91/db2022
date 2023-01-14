@@ -32,13 +32,11 @@ DROP TABLE IF EXISTS Student;
 
 CREATE TABLE Student (
 	StudentId INT NOT NULL AUTO_INCREMENT,
-	FirstName VARCHAR(255) NOT NULL,
-	LastName VARCHAR(255) NOT NULL,
+	Name VARCHAR(255) NOT NULL,
 	CONSTRAINT PRIMARY KEY (StudentId)
 	) ENGINE=INNODB;
 
-INSERT INTO Student(StudentId, FirstName, LastName) SELECT DISTINCT Id, SUBSTRING_INDEX(Name, ' ', 1), SUBSTRING_INDEX(Name, ' ', -1) FROM UNF;
-
+INSERT INTO Student(StudentId, Name) SELECT DISTINCT Id, Name FROM UNF;
 
 /* School */
 
@@ -131,10 +129,41 @@ JOIN Hobby USING(Hobby);
 ALTER TABLE StudentHobby ADD PRIMARY KEY (StudentId, HobbyId);
 
 
-/* HobbyList */
+/* HobbiesList */
 
-DROP VIEW IF EXISTS HobbyList;
+DROP VIEW IF EXISTS HobbiesList;
 
-CREATE VIEW HobbyList AS SELECT StudentId, CONCAT(FirstName, ' ', LastName) AS Name, GROUP_CONCAT(Hobby) AS Hobbies FROM Student
+CREATE VIEW HobbiesList AS SELECT StudentId, Name, GROUP_CONCAT(Hobby) AS Hobbies FROM Student
 JOIN StudentHobby USING(StudentId)
 JOIN Hobby USING(HobbyId) GROUP BY StudentId;
+
+
+/* Grade */
+
+DROP TABLE IF EXISTS Grade;
+
+CREATE TABLE Grade (
+    GradeId INT NOT NULL AUTO_INCREMENT,
+    Grade VARCHAR(150) NOT NULL,
+    CONSTRAINT PRIMARY KEY (GradeId)
+)  ENGINE=INNODB;
+
+INSERT INTO Grade(Grade) SELECT DISTINCT Grade FROM UNF;
+
+ALTER TABLE Student ADD COLUMN GradeId INT NOT NULL;
+
+UPDATE Student JOIN UNF ON (StudentId = Id) JOIN Grade ON Grade.Grade = UNF.Grade
+SET  Student.GradeId =  Grade.GradeId;
+
+
+/* UNF UPDATED */
+
+DROP VIEW IF EXISTS AVSLUT;
+
+CREATE VIEW AVSLUT AS
+SELECT StudentId as ID, Student.Name, Grade, Hobbies, School, City, Numbers FROM StudentSchool
+LEFT JOIN Student USING (StudentId)
+LEFT JOIN Grade USING (GradeId)
+LEFT JOIN HobbiesList USING (StudentId)
+LEFT JOIN School USING (SchoolId)
+LEFT JOIN PhoneList USING (StudentId);

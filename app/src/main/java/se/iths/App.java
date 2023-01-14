@@ -21,48 +21,51 @@ public class App {
     }
 
     private void load() throws SQLException {
-        Collection<Artist> artists = loadArtists();
-        for (Artist artist : artists) {
-            System.out.println(artist);
+        Collection<Student> students = loadStudents();
+        for (Student student : students) {
+            System.out.println(student);
         }
     }
 
-    private Collection<Artist> loadArtists() throws SQLException {
-        Collection<Artist> artists = new ArrayList<>();
+    private Collection<Student> loadStudents() throws SQLException {
+        Collection<Student> students = new ArrayList<>();
         Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-        ResultSet rs = con.createStatement().executeQuery(SQL_SELECT_ALL_ARTIST);
-        while (rs.next()) {
-            long id = rs.getLong(SQL_ArtistId);
-            String name = rs.getString(SQL_Artist_Name);
-            Artist artist = new Artist(id, name);
-            artists.add(artist);
+        ResultSet rs = con.createStatement().executeQuery("select StudentId, Name, School FROM Student join StudentSchool using(StudentId) join School using(SchoolId)");
 
-            Collection<Album> albums = loadAlbums(artist.getId());
-            for (Album album : albums) {
-                artist.add(album);
+        while (rs.next()) {
+            long id = rs.getLong("StudentId");
+            String name = rs.getString("Name");
+            Student student = new Student(id, name);
+            students.add(student);
+            Collection<School> schools = loadSchool(student.getId());
+            for(School school : schools) {
+               student.add(school);
             }
+
         }
         rs.close();
         con.close();
-        return artists;
+        return students;
     }
 
-    private Collection<Album> loadAlbums(long artistId) throws SQLException {
-        Collection<Album> albums = new ArrayList<>();
-        Connection con = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+    private Collection<School> loadSchool(long studentId) throws SQLException {
+        Collection<School> schools = new ArrayList<>();
+        Connection con = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASSWORD);
 
-        PreparedStatement stmt = con.prepareStatement(SQL_ARTIST_BY_ALBUM);
-        stmt.setLong(1, artistId);
+        PreparedStatement stmt = con.prepareStatement("SELECT StudentId, Name, SchoolId, School FROM Student JOIN StudentSchool USING (StudentId) JOIN School USING (SchoolId) WHERE StudentId = ?;");
+        stmt.setLong(1,studentId);
+
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            long id = rs.getLong(SQL_ALBUM_ID);
-            String title = rs.getString(SQL_ALBUM_TITLE);
-            Album album = new Album(id, title);
-            albums.add(album);
+            long schoolId = rs.getLong("SchoolId");
+            String schoolName = rs.getString("School");
+            School school = new School(schoolId,schoolName);
+            schools.add(school);
         }
+        stmt.close();
         rs.close();
-        con.close();
-        return albums;
+        return schools;
     }
+
 
 }

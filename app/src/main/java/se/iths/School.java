@@ -1,28 +1,28 @@
 package se.iths;
 
-public class Album {
-    private final long id;
-    private String title;
+public class School {
+    private long schoolId;
+    private String school;
 
-    public Album(long id, String title) {
-        this.id = id;
-        this.title = title;
+    public School(long schoolId, String school) {
+        this.schoolId = schoolId;
+        this.school = school;
     }
 
-    public long getId() {
-        return id;
+    public long getSchoolId() {
+        return schoolId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getSchool() {
+        return school;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSchool(String school) {
+        this.school = school;
     }
 
     public String toString() {
-        return String.format("%d %s", id, title);
+        return String.format("%d %s", schoolId, school);
     }
 
 }
