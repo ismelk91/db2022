@@ -60,5 +60,5 @@ docker exec -i iths-mysql mysql -uiths -piths < normalisering.sql
 
 ## Köra java koden
 
-gradle run
+gradle run   
 gradle check
