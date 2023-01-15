@@ -1,4 +1,6 @@
-# db2022
+# DB2022
+
+I kursen DB2022 på IT-Högskolan skulle vi redovisa på färdigheter i SQL, Normalisering samt Java mot en relationsdatabas. Detta är min redovisning från denna kurs.
 
 ## Entity Relationship Diagram
 ```mermaid
@@ -48,5 +50,15 @@ erDiagram
     int HobbyId
     string Hobby
     }
-   
 ```
+
+
+## Normalisera databas
+
+docker exec -i iths-mysql mysql -uiths -piths < normalisering.sql
+
+
+## Köra java koden
+
+gradle run
+gradle check
