@@ -55,6 +55,8 @@ erDiagram
 
 ## Normalisera databas
 
+cd ws  
+cd db2022  
 docker exec -i iths-mysql mysql -uiths -piths < normalisering.sql
 
 
