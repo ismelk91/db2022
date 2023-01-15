@@ -1,5 +1,6 @@
 # db2022
 
+##Entity Relationship Diagram
 ```mermaid
 erDiagram
     School||--o{ StudentSchool : enrolls
